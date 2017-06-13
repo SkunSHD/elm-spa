@@ -7,6 +7,10 @@
         ".",
         "app/"
     ],
+    "make-info": {
+      "main": "app/App.elm",
+      "out": "dist/main.js"
+    },
     "exposed-modules": [],
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
