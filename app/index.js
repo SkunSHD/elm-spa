@@ -1,25 +1,60 @@
-'use strict';
+var express = require('express');
 
-// We’re setting up an extremely simple server here.
-const http = require('http');
+var graphqlHTTP = require('express-graphql');
+var { buildSchema } = require('graphql');
+var path = require('path');
 
-// These could (should) be set as env vars.
-const port = process.env.PORT || 5000;
-const host = process.env.HOST || 'localhost';
 
-// No matter what hits the server, we send the same thing.
-http.createServer((req, res) => {
+// Construct a schema, using GraphQL schema language
+var schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
 
-  // Tell the browser what’s coming.
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8',
-  });
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+};
 
-  // Send a simple message in HTML.
-  res.write('<h1>I’m a Node app!</h1>');
-  res.write('<p>And I’m <em>sooooo</em> secure.</p>');
-  res.end();
-}).listen(port, host);
+var app = express();
+app.use(express.static(__dirname));
 
-// This message prints in the console when the app starts.
-console.log(`App running at http://${host}:${port}`);
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true,
+}));
+
+app.listen(5000, ()=> {
+	console.log('Running a GraphQL API server at localhost:5000/graphql');
+});
+
+
+
+// 'use strict';
+
+// var express = require('express');
+// var app = express();
+// var path = require('path');
+
+
+// // mount all static files
+// app.use(express.static(__dirname));
+
+// app.listen(5000);
+
+// // mongodb connection part //
+// var MongoClient = require('mongodb').MongoClient
+//   , assert = require('assert');
+
+// var url = 'mongodb://localhost:27017/myproject';
+
+// MongoClient.connect(url, function(err, db) {
+//   assert.equal(null, err);
+//   console.log("Connected successfully to server");
+
+//   db.close();
+// });
