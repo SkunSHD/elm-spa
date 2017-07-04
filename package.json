@@ -1,0 +1,31 @@
+{
+  "name": "nicemove.pp.ua",
+  "version": "1.0.0",
+  "description": "elm/graphql/mogodb app",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "express-graphql": "^0.6.6",
+    "graphql": "^0.10.3",
+    "mongodb": "^2.2.29"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm start index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkunSHD/elm-spa.git"
+  },
+  "keywords": [
+    "elm",
+    "graphql",
+    "mogodb"
+  ],
+  "author": "skunshd, andiwilflly",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SkunSHD/elm-spa/issues"
+  },
+  "homepage": "https://github.com/SkunSHD/elm-spa#readme"
+}
