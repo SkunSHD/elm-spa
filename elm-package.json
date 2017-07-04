@@ -5,7 +5,8 @@
     "license": "BSD3",
     "source-directories": [
         ".",
-        "app/"
+        "app",
+        "app/src"
     ],
     "make-info": {
       "main": "app/App.elm",

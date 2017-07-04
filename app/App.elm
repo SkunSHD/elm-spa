@@ -7,20 +7,17 @@ import Html.Events exposing (..)
 import Http
 import Json.Decode as Decode
 
+import Counter.View
+import Counter.Model
+
 
 
 -- MODEL.MSG
 type alias Model =
   {
-    topic : String,
-    gifUrl : String
+    counter: Counter.Model.CounterModel
   }
 
-init : String -> (Model, Cmd Msg)
-init topic =
-  ( Model topic "waiting.gif"
-  , getRandomGif topic
-  )
 
 
 
@@ -30,59 +27,36 @@ type Msg
   | NewGif (Result Http.Error String)
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> Model
 update msg model =
-  case msg of
-    MorePlease ->
-      (model, getRandomGif model.topic)
+  { model
+    | counter = CounterModel.update msg model.counter
+  }
 
-    NewGif (Ok newUrl) ->
-      (Model model.topic newUrl, Cmd.none)
-
-    NewGif (Err _) ->
-      (model, Cmd.none)
 
 
 -- VIEW
 view : Model -> Html Msg
 view model =
+  let counter = mode.counter
+  in
   div []
-    [ h2 [] [text model.topic]
-    , button [ onClick MorePlease ] [ text "More Please!" ]
+    [ h2 [] [counter]
     , br [] []
-    , img [src model.gifUrl] []
     ]
 
 
 
 
--- SUBSCRIPTIONS
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
-
-
-
-
--- HTTP
-getRandomGif : String -> Cmd Msg
-getRandomGif topic =
-  let
-    url =
-      "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" ++ topic
-  in
-    Http.send NewGif (Http.get url decodeGifUrl)
-
-
-decodeGifUrl : Decode.Decoder String
-decodeGifUrl =
-  Decode.at ["data", "image_url"] Decode.string
-
-
 main =
-  Html.program
-    { init = init "russians",
+  Html.programWithFlags
+    { init = init,
       view = view,
       update = update,
-      subscriptions = subscriptions
+      subscriptions = \_ -> Sub.none
     }
+
+
+init : Counter.Model.CounterModel -> (Counter.Model.CounterModel)
+init counterModel =
+  ( counterModel )
